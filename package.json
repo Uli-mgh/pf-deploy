@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -L"
+    "start": "node ."
   },
   "dependencies": {
     "body-parser": "^1.20.0",
