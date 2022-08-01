@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
             defaultValue: false
         },*/
         amount: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.STRING,
             allowNull: true
         },
         date: {
@@ -45,7 +45,16 @@ module.exports = (sequelize) => {
         street: {
             type: DataTypes.STRING,
             defaultValue: ""
-        },/* 
+        },
+        postalCode: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
+        phoneNumber:{
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
+        /* 
         paymentStatus: {
             type: DataTypes.ENUM("pending", "completed", "canceled"),
             defaultValue: "pending"
