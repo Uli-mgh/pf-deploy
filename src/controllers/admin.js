@@ -1,12 +1,11 @@
 const { User } = require("../db");
 
 const setAdmin = async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
 
   let setAdmin = true;
-
   try {
-    const user = await User.findOne({ where: { email: email } });
+    const user = await User.findOne({ where: { id: id } });
     if (user.isAdmin) {
       setAdmin = false;
     }
@@ -14,7 +13,7 @@ const setAdmin = async (req, res) => {
       {
         isAdmin: setAdmin,
       },
-      { where: { email: email } }
+      { where: { id: id } }
     );
     return res.status(200).send(newAdmin);
   } catch (error) {
@@ -28,18 +27,31 @@ const getAllUsers = async (req, res) => {
     if (!user) {
       return res.status(404).send("Users Not Found");
     }
-    return res.status(200).send(user);
+
+    const userData = user.map((e) => {
+      const format = {
+        id: e.id,
+        fullName: e.fullName,
+        image: e.image,
+        email: e.email,
+        banned: e.banned === false ? "Active" : "Banned",
+        admin: e.isAdmin === false ? "User" : "Admin",
+      };
+      return format;
+    });
+
+    return res.status(200).send(userData);
   } catch (error) {
     res.status(404).send(error);
   }
 };
 
 const disableAccount = async (req, res) => {
-  const { email } = req.params;
+  const { id } = req.params;
   let ban = true;
 
   try {
-    const user = await User.findOne({ where: { email: email } });
+    const user = await User.findOne({ where: { id: id } });
 
     if (user.banned) {
       ban = false;
@@ -49,7 +61,7 @@ const disableAccount = async (req, res) => {
       {
         banned: ban,
       },
-      { where: { email: email } }
+      { where: { id: id } }
     );
     return res.status(201).send(disabledAcc);
   } catch (error) {
@@ -58,4 +70,41 @@ const disableAccount = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, disableAccount, setAdmin };
+const updateStatus = async (req, res) => {
+  const { id } = req.params;
+  const { admin, banned } = req.body;
+
+  try {
+    console.log(admin);
+    console.log(banned);
+    // let setAdmin;
+    // let setBan;
+
+    // if (admin === "User") {
+    //   let setAdmin = false;
+    // }
+    // if (admin === "Admin") {
+    //   let setAdmin = true;
+    // }
+    // if (banned === "Active") {
+    //   let setBan = false;
+    // }
+    // if (banned === "Banned") {
+    //   let setBan = true;
+    // }
+
+    const updated = await User.update(
+      {
+        banned: banned === "Active" ? false : true,
+        isAdmin: admin === "User" ? false : true,
+      },
+      { where: { id: id } }
+    );
+
+    res.status(200).send(updated);
+  } catch (error) {
+    res.status(500).send("error");
+  }
+};
+
+module.exports = { getAllUsers, disableAccount, setAdmin, updateStatus };
