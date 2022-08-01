@@ -3,11 +3,9 @@ const Stripe = require("stripe");
 const { User, Product, Sell_order, Product_values } = require("../db");
 const { Sequelize } = require("sequelize");
 const { Op } = require("sequelize");
-//aca va la clave privada
 const stripe = new Stripe(
-  "sk_test_51LRM01FTo7BILoUXII9kTG5f0fYcBzL9P7w0ZxPiRCcJtVEIIyk61lM7yMwzmf8sdTL0JbjioaEcQvy3JHutCBa200eyDOEA8Z"
+  "sk_test_51LDapSLLyNiW7nbRtu012BcZsbgDoQtaLp5ADJ5usnS2kbDlUdBTda2fD0HqxN6PbBDUeQKTXFLRdxVZtntborIf00EcE31nIZ"
 );
-//
 const router = Router();
 const { mailPayment } = require("../middlewares/middlewares.js");
 //const Product_values = require("../models/Product_values");
